@@ -1,0 +1,1 @@
+# kaspi-trend-ai
