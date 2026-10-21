@@ -10,8 +10,8 @@ import requests
 
 BASE = "https://kaspi.kz"
 CATEGORIES = [
-    "https://kaspi.kz/shop/c/televizory/",
-    "https://kaspi.kz/shop/c/smartfony/",
+    "https://kaspi.kz/shop/c/tvs/all/",
+    "https://kaspi.kz/shop/c/smartphones/",
 ]
 UA = "KaspiTrendAIResearch/0.3 (public catalog discovery)"
 
