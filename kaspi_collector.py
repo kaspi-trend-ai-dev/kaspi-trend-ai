@@ -76,6 +76,8 @@ def extract_metadata(page: str, url: str) -> dict:
     if not isinstance(rating, dict):
         rating = {}
     price = offers.get("price")
+    if price is None:
+        price = parser.meta.get("product:price:amount")
     if price is not None:
         try:
             price = float(str(price).replace(" ", "").replace(",", "."))
@@ -85,7 +87,7 @@ def extract_metadata(page: str, url: str) -> dict:
         "url": url,
         "title": product.get("name") or parser.meta.get("og:title"),
         "price": price,
-        "currency": offers.get("priceCurrency"),
+        "currency": offers.get("priceCurrency") or parser.meta.get("product:price:currency"),
         "availability": offers.get("availability"),
         "rating": rating.get("ratingValue"),
         "review_count": rating.get("reviewCount"),
