@@ -123,7 +123,7 @@ def load_product(url):
 def render_product_opportunities():
     st.subheader("Товарная аналитика Kaspi — первая версия")
     st.caption("Реальные публичные карточки Kaspi, без вымышленных продаж. Данные загружаются при открытии и кешируются на 15 минут.")
-    st.warning(
+    st.info(
         "Kaspi не предоставляет здесь подтверждённые продажи конкурентов. "
         "Цена и карточка не позволяют достоверно рассчитать спрос, оборот или рейтинг продаваемости. "
         "Пока это мониторинг доступности товарных данных, а не полноценный SaleScout."
@@ -147,7 +147,7 @@ def render_product_opportunities():
             try:
                 records.append(load_product(url))
             except (ValueError, requests.RequestException) as exc:
-                st.warning(f"Не удалось загрузить {url}: {type(exc).__name__}")
+                st.info(f"Не удалось загрузить {url}: {type(exc).__name__}")
         if not records:
             st.info("Нет доступных карточек. Данные не подменяются примерами.")
             return
