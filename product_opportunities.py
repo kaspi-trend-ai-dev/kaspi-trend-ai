@@ -134,7 +134,10 @@ def render_product_opportunities():
         height=100,
         help="Проверяется только указанный список; автоматического обхода категорий пока нет.",
     )
-    if st.button("Загрузить карточки", type="primary"):
+    refresh = st.button("Обновить карточки", type="primary")
+    if refresh:
+        load_product.clear()
+    if True:
         urls = list(dict.fromkeys(line.strip() for line in urls_text.splitlines() if line.strip()))
         if len(urls) > MAX_URLS:
             st.error(f"Максимум {MAX_URLS} ссылок за запрос.")
