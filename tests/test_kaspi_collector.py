@@ -22,6 +22,16 @@ class KaspiCollectorTests(unittest.TestCase):
         self.assertEqual(record["title"], "DISHOP TV")
         self.assertIsNone(record["price"])
 
+    def test_public_kaspi_price_meta(self):
+        page = (
+            '<meta property="og:title" content="DISHOP 43NS77">'
+            '<meta property="product:price:amount" content="129990.00">'
+            '<meta property="product:price:currency" content="KZT">'
+        )
+        record = extract_metadata(page, URL)
+        self.assertEqual(record["price"], 129990.0)
+        self.assertEqual(record["currency"], "KZT")
+
     def test_rejects_external_domains(self):
         with self.assertRaises(ValueError):
             collect("https://kaspi.kz.evil.example/shop/p/x")
