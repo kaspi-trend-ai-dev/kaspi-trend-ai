@@ -73,7 +73,7 @@ def render_opportunity_ranking():
         st.caption("Таблица пуста до загрузки данных. Демонстрационные товары не подставляются.")
         return
     try:
-        if uploaded.size > 4_000_000:
+        if len(uploaded.getvalue()) > 4_000_000:
             raise ValueError("Максимальный размер CSV — 4 МБ")
         frame = pd.read_csv(uploaded, encoding="utf-8-sig")
         result = analyze(frame)
