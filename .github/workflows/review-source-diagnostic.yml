@@ -1,0 +1,20 @@
+name: Public Kaspi review source diagnostic
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+  pull_request:
+    paths:
+      - 'review_source_diagnostic.py'
+      - '.github/workflows/review-source-diagnostic.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python review_source_diagnostic.py
