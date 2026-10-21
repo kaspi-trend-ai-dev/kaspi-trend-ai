@@ -1,4 +1,6 @@
 
-streamlit>=1.35,<2
+streamlit>=1.40,<2
 pandas>=2.2,<3
 numpy>=1.26,<3
+requests>=2.32,<3
+defusedxml>=0.7.1,<1
