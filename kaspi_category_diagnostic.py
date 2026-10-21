@@ -57,6 +57,10 @@ def main():
             }
             print("PRODUCT_LINK_COUNT:", len(products))
             print("HAS_PRODUCT_LINKS:", bool(products))
+            print("HAS_PRICE_TEXT:", "Цена" in response.text)
+            print("HAS_REVIEWS_TEXT:", "отзыв" in response.text.lower())
+            print("HAS_JSON_LD:", "application/ld+json" in response.text.lower())
+            print("HTML_BYTES:", len(response.content))
         except (requests.RequestException, ValueError) as exc:
             print("CATEGORY_ERROR:", type(exc).__name__)
 
