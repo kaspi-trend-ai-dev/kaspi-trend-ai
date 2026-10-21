@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 import requests
 import streamlit as st
 import pandas as pd
+from review_history import save_snapshot, estimate_from_snapshots
 
 SAMPLE_URL = "https://kaspi.kz/shop/p/dishop-43ns77-109-sm-chernyi-161213427/"
 MAX_URLS = 12
@@ -151,10 +152,23 @@ def render_product_opportunities():
         if not records:
             st.info("Нет доступных карточек. Данные не подменяются примерами.")
             return
+        multiplier = st.slider("Оценка продаж на 1 новый отзыв", min_value=1, max_value=30, value=10, key="product_review_multiplier")
+        from pathlib import Path
+        db_path = Path(".kaspi_review_snapshots.sqlite3")
+        for item in records:
+            try:
+                if item["ID"] and item["Отзывы"] is not None:
+                    save_snapshot(db_path, item["ID"], item["Отзывы"])
+                estimate = estimate_from_snapshots(db_path, item["ID"], multiplier)
+                item["Прогноз продаж 30д"] = estimate["estimated_sales_30d"] if estimate else None
+                item["Прирост отзывов 30д (оценка)"] = estimate["estimated_new_reviews_30d"] if estimate else None
+            except (ValueError, TypeError, OSError):
+                item["Прогноз продаж 30д"] = None
+                item["Прирост отзывов 30д (оценка)"] = None
         df = pd.DataFrame(records)
         st.dataframe(df, use_container_width=True, hide_index=True, column_config={"Ссылка": st.column_config.LinkColumn("Карточка")})
         st.download_button("Скачать реальные данные CSV", df.to_csv(index=False).encode("utf-8-sig"), "kaspi_products.csv", "text/csv")
-        st.caption("Цена — опубликованное значение метаданных карточки, не гарантированная цена конкретного продавца.")
+        st.caption("Прогноз появляется только после 30 дней сохранённых наблюдений с доступным счётчиком отзывов. Локальная история на Streamlit Cloud может сбрасываться при перезапуске; для постоянного мониторинга нужна внешняя БД. Цена — значение метаданных карточки.")
     st.divider()
     st.markdown("**Что ещё требуется для поиска реально продаваемых товаров**")
     st.write(
