@@ -15,13 +15,13 @@ st.info(
     "Прямое подключение к статистике Kaspi не настроено."
 )
 
-products_tab, trends_tab, csv_tab = st.tabs(["Товары Kaspi", "Поисковые тренды · Казахстан", "Анализ CSV"])
-with products_tab:
-    render_product_opportunities()
+trends_tab, csv_tab, products_tab = st.tabs(["Поисковые тренды · Казахстан", "Анализ CSV", "Товары Kaspi"])
 with trends_tab:
     render_search_trends()
 with csv_tab:
     render_csv_analysis()
+with products_tab:
+    render_product_opportunities()
 
 st.divider()
 st.caption("Kaspi Trend AI · Поисковый интерес и пользовательские данные · Данные о продажах не подключены")
