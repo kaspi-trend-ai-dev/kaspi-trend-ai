@@ -3,6 +3,7 @@ import streamlit as st
 from csv_analysis import render_csv_analysis
 from trends_ui import render_search_trends
 from product_opportunities import render_product_opportunities
+from opportunity_ranking import render_opportunity_ranking
 
 
 st.set_page_config(page_title="Kaspi Trend AI", page_icon="📈", layout="wide")
@@ -15,13 +16,15 @@ st.info(
     "Прямое подключение к статистике Kaspi не настроено."
 )
 
-trends_tab, csv_tab, products_tab = st.tabs(["Поисковые тренды · Казахстан", "Анализ CSV", "Товары Kaspi"])
+trends_tab, csv_tab, products_tab, ranking_tab = st.tabs(["Поисковые тренды · Казахстан", "Анализ CSV", "Товары Kaspi", "Поиск прибыльных товаров"])
 with trends_tab:
     render_search_trends()
 with csv_tab:
     render_csv_analysis()
 with products_tab:
     render_product_opportunities()
+with ranking_tab:
+    render_opportunity_ranking()
 
 st.divider()
 st.caption("Kaspi Trend AI · Поисковый интерес и пользовательские данные · Данные о продажах не подключены")
