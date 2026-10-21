@@ -1,0 +1,34 @@
+name: Kaspi live access diagnostic
+on:
+  pull_request:
+    paths:
+      - 'kaspi_collector.py'
+      - '.github/workflows/kaspi-live-diagnostic.yml'
+  workflow_dispatch:
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: One-time public product access diagnostic
+        env:
+          PRODUCT_URL: https://kaspi.kz/shop/p/dishop-43ns77-109-sm-chernyi-161213427/?m=14956007&ms=true
+        run: |
+          python - <<'PY'
+          import os
+          from kaspi_collector import collect
+          try:
+              data = collect(os.environ["PRODUCT_URL"], timeout=12)
+              print("ACCESS_OK")
+              print("Title present:", bool(data.get("title")))
+              print("Price present:", data.get("price") is not None)
+              print("Rating present:", data.get("rating") is not None)
+              print("Availability present:", data.get("availability") is not None)
+          except Exception as exc:
+              print("ACCESS_NOT_CONFIRMED")
+              print("Reason:", type(exc).__name__, str(exc)[:240])
+          PY
